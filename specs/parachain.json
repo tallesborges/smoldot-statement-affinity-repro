@@ -1,0 +1,15 @@
+{
+  "name": "Statement Affinity Repro Parachain",
+  "id": "statement-affinity-repro",
+  "chainType": "Live",
+  "bootNodes": [],
+  "telemetryEndpoints": null,
+  "protocolId": null,
+  "properties": {},
+  "relay_chain": "paseo",
+  "para_id": 4242,
+  "codeSubstitutes": {},
+  "genesis": {
+    "stateRootHash": "0x1111111111111111111111111111111111111111111111111111111111111111"
+  }
+}

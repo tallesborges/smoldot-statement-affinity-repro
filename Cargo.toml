@@ -1,0 +1,29 @@
+[package]
+name = "smoldot-statement-affinity-repro"
+version = "0.1.0"
+edition = "2024"
+publish = false
+description = "Offline reproduction: on one smoldot-light Client, one chain handle's statement topic affinity replaces another's"
+
+[features]
+default = ["smoldot-light-3"]
+# Exactly one of these. The loopback peer uses the `smoldot` core that the
+# selected smoldot-light release depends on.
+smoldot-light-3 = ["dep:smoldot-light-3", "dep:smoldot-5"]
+smoldot-light-2 = ["dep:smoldot-light-2", "dep:smoldot-4"]
+
+[dependencies]
+smoldot-light-3 = { package = "smoldot-light", version = "=3.0.0", default-features = false, features = ["std"], optional = true }
+smoldot-5 = { package = "smoldot", version = "=5.0.0", default-features = false, features = ["std"], optional = true }
+smoldot-light-2 = { package = "smoldot-light", version = "=2.1.0", default-features = false, features = ["std"], optional = true }
+smoldot-4 = { package = "smoldot", version = "=4.0.0", default-features = false, features = ["std"], optional = true }
+futures-lite = "2"
+hex = "0.4"
+serde_json = "1"
+smol = "2"
+
+# smoldot's internal `debug_assert!`s fire on connection edge cases between two
+# smoldot instances on loopback (see README). They are compiled out of release
+# builds, which is how smoldot ships, so they are compiled out here too.
+[profile.dev]
+debug-assertions = false
