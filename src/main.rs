@@ -23,6 +23,7 @@ const SMOLDOT_LIGHT_VERSION: &str = "2.1.0";
 const SMOLDOT_LIGHT_VERSION: &str = "3.0.0";
 
 mod peer;
+mod relay_spec;
 
 use std::{
     cell::Cell,
@@ -44,8 +45,6 @@ use peer::Forwarding;
 
 type LightClientInner = Client<Arc<DefaultPlatform>, ()>;
 
-/// Fetched by `fetch-relay-spec.sh`, verbatim from smoldot's repository.
-const RELAY_SPEC_PATH: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/specs/relay-paseo.json");
 const PARACHAIN_SPEC: &str = include_str!("../specs/parachain.json");
 
 /// smoldot's own example setting; at most one filter per chain handle per interval.
@@ -110,7 +109,7 @@ impl LightClient {
         let relay = client
             .add_chain(AddChainConfig {
                 user_data: (),
-                specification: &relay_spec(),
+                specification: &relay_spec::json(),
                 database_content: "",
                 potential_relay_chains: iter::empty(),
                 json_rpc: AddChainConfigJsonRpc::Disabled,
@@ -396,17 +395,6 @@ impl Harness {
         );
         self.checks.push(check);
     }
-}
-
-/// The relay chain spec from smoldot's repository, with its bootnodes removed
-/// so that the light client contacts no public peer.
-fn relay_spec() -> String {
-    let text = std::fs::read_to_string(RELAY_SPEC_PATH).unwrap_or_else(|_| {
-        panic!("{RELAY_SPEC_PATH} is missing: run ./fetch-relay-spec.sh first")
-    });
-    let mut spec: Value = serde_json::from_str(&text).expect("relay chain spec is JSON");
-    spec["bootNodes"] = json!([]);
-    spec.to_string()
 }
 
 fn parachain_genesis_hash() -> [u8; 32] {

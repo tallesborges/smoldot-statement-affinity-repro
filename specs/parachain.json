@@ -6,7 +6,7 @@
   "telemetryEndpoints": null,
   "protocolId": null,
   "properties": {},
-  "relay_chain": "paseo",
+  "relay_chain": "statement-affinity-repro-relay",
   "para_id": 4242,
   "codeSubstitutes": {},
   "genesis": {

@@ -15,8 +15,7 @@ Tested with smoldot-light 3.0.0 (latest release) and 2.1.0. Both show the bug.
 ## Run
 
 ```sh
-./fetch-relay-spec.sh   # downloads the relay chain spec from the smoldot repository
-cargo run --locked      # smoldot-light 3.0.0
+cargo run --locked   # smoldot-light 3.0.0
 cargo run --locked --no-default-features --features smoldot-light-2   # smoldot-light 2.1.0
 ```
 
@@ -54,8 +53,8 @@ new filter
 
 - The peer is a test peer on 127.0.0.1, built from smoldot's `ChainNetwork`. It
   is not a full node. It records filters and can apply them in the same way as
-  polkadot-sdk does for a light peer. The repro does not connect to a public
-  network.
+  polkadot-sdk does for a light peer. The relay and parachain specs are
+  synthetic, and the repro does not connect to a public network.
 - Debug assertions are off. With them on, the light client panics during
   connection setup (`smoldot-5.0.0/src/libp2p/connection/yamux.rs:961`). This
   panic is not related to the filter. Release builds do not include these
